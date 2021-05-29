@@ -1,2 +1,4 @@
-for i in range(2,10):
-    print(i)
+a=[1,2,3,4]
+print(a[::2])
+b=[1,2]+[3,4]
+print(b)
