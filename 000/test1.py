@@ -1,4 +1,4 @@
-for i in range(5):
-    if i == 2:
-        continue
-    print(i)
+s = "abc"
+c = list(s)
+c.insert(0, "d")
+print(''.join(c))
