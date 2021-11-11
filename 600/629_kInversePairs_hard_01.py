@@ -23,22 +23,15 @@
 
 class Solution:
     def kInversePairs(self, n: int, k: int) -> int:
-        dp = [[0 for _ in range(k+1)] for _ in range(n + 1)]
-        for i in range(1,n):
-            dp[i][0] = 1
-        for i in range(1, n+1):
-            for j in range(1, k+1):
-                if i*(i-1)<j*2:
-                    break
-                if j > i:
-                    for t in range(1, i + 1):
-                        dp[i][j] += dp[i - 1][j - t + 1]
-                else:
-                    for t in range(1, j + 1):
-                        dp[i][j] += dp[i - 1][j - t + 1]
-        for i in range(n+1):
-            print(dp[i])
-        return dp[n][k]
+        mod = 10 ** 9 + 7
+        f = [1] + [0] * k
+        for i in range(1, n + 1):
+            g = [0] * (k + 1)
+            for j in range(k + 1):
+                g[j] = (g[j - 1] if j - 1 >= 0 else 0) - (f[j - i] if j - i >= 0 else 0) + f[j]
+                g[j] %= mod
+            f = g
+        return f[k]
 
 
 solve = Solution()
