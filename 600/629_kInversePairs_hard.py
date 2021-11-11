@@ -19,3 +19,20 @@
 解释:
 数组 [1,3,2] 和 [2,1,3] 都有 1 个逆序对。
 '''
+
+
+class Solution:
+    def kInversePairs(self, n: int, k: int) -> int:
+        dp = [[0 for _ in range(k)] for _ in range(n + 1)]
+        for i in range(n):
+            dp[i][0] = 1
+
+        pass
+
+
+
+solve = Solution()
+n = 4
+k = 2
+result = solve.kInversePairs(n, k)
+print(result)
