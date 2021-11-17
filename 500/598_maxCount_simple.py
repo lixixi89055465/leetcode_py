@@ -35,3 +35,21 @@ m 和 n 的范围是 [1,40000]。
 a 的范围是 [1,m]，b 的范围是 [1,n]。
 操作数目不超过 10000。
 '''
+
+
+class Solution:
+    def maxCount(self, m: int, n: int, ops) -> int:
+        if len(ops) == 0:
+            return m*n
+        mina, minb = ops[0][0], ops[0][1]
+        for a, b in ops:
+            mina = min(a, mina)
+            minb = min(b, minb)
+        return mina * minb
+
+
+solve = Solution()
+# m, n, ops = 3, 3, [[2, 2], [3, 3]]
+m, n, ops = 3, 3, []
+result = solve.maxCount(m, n, ops)
+print(result)
