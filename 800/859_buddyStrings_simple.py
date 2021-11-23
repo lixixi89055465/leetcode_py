@@ -37,31 +37,28 @@ s 和 goal 由小写英文字母组成
 
 
 class Solution:
-    def buddyStrings(self, s: str, goal: str) -> bool:
-        if len(s) != len(goal):
-            return False
-        if len(s) < 2:
-            return False
-        if s == goal:
-            m = dict()
-            for i in s:
-                m[i] = m.get(i, 0) + 1
-            for v in m.values():
-                if v >= 2:
-                    return True
-            return False
-        a = set()
-        b = set()
-        c = 0
-        for i in range(len(s)):
-            if s[i] != goal[i]:
-                a.add(s[i])
-                b.add(goal[i])
-                c+=1
+    def isMatch(self, s: str, p: str) -> bool:
+        m, n = len(s), len(p)
 
-        if len(a) == 2 and len(b) == 2 and len(a.union(b)) == 2 and c==2:
-            return True
-        return False
+        def matches(i: int, j: int) -> bool:
+            if i == 0:
+                return False
+            if p[j - 1] == '.':
+                return True
+            return s[i - 1] == p[j - 1]
+
+        f = [[False] * (n + 1) for _ in range(m + 1)]
+        f[0][0] = True
+        for i in range(m + 1):
+            for j in range(1, n + 1):
+                if p[j - 1] == '*':
+                    f[i][j] |= f[i][j - 2]
+                    if matches(i, j - 1):
+                        f[i][j] |= f[i - 1][j]
+                else:
+                    if matches(i, j):
+                        f[i][j] |= f[i - 1][j - 1]
+        return f[m][n]
 
 
 solve = Solution()
@@ -76,7 +73,7 @@ goal = "ba"
 # s = "abcaa"
 # goal = "abcbb"
 
-s="abab"
-goal="baba"
+s = "abab"
+goal = "baba"
 result = solve.buddyStrings(s, goal)
 print(result)
