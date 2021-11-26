@@ -27,9 +27,16 @@
 输出：2
 '''
 
+
 class Solution:
     def poorPigs(self, buckets: int, minutesToDie: int, minutesToTest: int) -> int:
-        pass
-solve=Solution()
+        pig = 0
+        while (minutesToTest // minutesToDie + 1) ** pig < buckets:
+            pig += 1
+        return pig
 
-solve.poorPigs()
+
+solve = Solution()
+
+result = solve.poorPigs(1000, 15, 60)
+print(result)
