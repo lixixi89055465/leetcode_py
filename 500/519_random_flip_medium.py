@@ -36,22 +36,32 @@ solution.flip();  // 返回 [2, 0]，此时返回 [0,0]、[1,0] 和 [2,0] 的概
 
 '''
 
+import random
+
 
 class Solution:
 
     def __init__(self, m: int, n: int):
-        pass
+        self.m = m
+        self.n = n
+        self.total = m * n
+        self.s = {}
 
-    def flip(self) -> list[int]:
-        pass
+    def flip(self) -> list:
+        x = random.randint(0, self.total - 1)
+        self.total -= 1
+        idx = self.s.get(x, x)
+        self.s[x] = self.s.get(self.total, self.total)
+        return [idx // self.n, idx % self.n]
 
     def reset(self) -> None:
-        pass
+        self.total = self.m * self.n
+        self.s.clear()
 
 
 # Your Solution object will be instantiated and called as such:
 m = 3
-n = 1
+n = 2
 obj = Solution(m, n)
 param_1 = obj.flip()
 obj.reset()
