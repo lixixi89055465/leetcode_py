@@ -33,11 +33,37 @@ arr 中的所有数字 互不相同 ，且按 严格递增 排序
 
 
 class Solution:
-    def kthSmallestPrimeFraction(self, arr: list[int], k: int) -> list[int]:
-        pass
+    def kthSmallestPrimeFraction(self, arr: list, k: int) -> list:
+        left = 0.0
+        right = 1.0
+        n = len(arr)
+        while True:
+            mid = (left + right) / 2
+            count = 0
+            x, y = 0, n
+            j = -1
+            for i in range(1, n):
+                while arr[j + 1] / arr[i] < mid:
+                    j += 1
+                    if arr[j] * y > arr[i] * x:
+                        x, y = arr[j], arr[i]
+                if j >= 0:
+                    count += j + 1
+
+            if count == k:
+                return x, y
+            if count > k:
+                right = mid
+            else:
+                left = mid
 
 
 solve = Solution()
 arr = [1, 2, 3, 5]
 k = 3
-solve.kthSmallestPrimeFraction()
+# arr = [1,7]
+# k = 1
+# arr = [1, 13, 17, 59]
+# k = 6
+result = solve.kthSmallestPrimeFraction(arr, k)
+print(result)
