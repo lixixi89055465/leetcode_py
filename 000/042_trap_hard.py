@@ -26,11 +26,24 @@ n == height.length
 
 
 class Solution:
-    def trap(self, height: list[int]) -> int:
-        pass
+    def trap(self, height: list) -> int:
+        n = len(height)
+        left = [0] * n
+        right = [0] * n
+        j = 1
+        left[0] = height[0]
+        right[-1] = height[-1]
+        for i in range(1, len(height)):
+            left[i] = max(left[i - 1], height[i])
+            right[-i - 1] = max(height[- i - 1], right[-i])
+        result = 0
+        for i in range(0, len(height)):
+            result += min(left[i], right[i])-height[i]
+        return result
 
 
 solve = Solution()
 height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+# height = [4, 2, 0, 3, 2, 5]
 result = solve.trap(height)
 print(result)
