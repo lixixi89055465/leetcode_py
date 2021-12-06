@@ -35,9 +35,35 @@ exection -> execution (插入 'u')
 word1 和 word2 由小写英文字母组成
 '''
 
+
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
-        pass
-solve=Solution()
+        n1 = len(word1)
+        n2 = len(word2)
+        dp = [[0 for _ in range(n2 + 1)] for _ in range(n1 + 1)]
+        for i in range(n1+1):
+            for j in range(n2+1):
+                if i == 0:
+                    dp[i][j] = j
+                if j == 0:
+                    dp[i][j] = i
+        for i in range(n1):
+            for j in range(n2):
+                if word1[i] == word2[j]:
+                    dp[i + 1][j + 1] = dp[i][j]
+                else:
+                    dp[i + 1][j + 1] = 1 + min(
+                        dp[i][j + 1], dp[i + 1][j], dp[i][j]
+                    )
+        return dp[-1][-1]
 
-solve.minDistance()
+
+solve = Solution()
+word1 = "intention"
+word2 = "execution"
+# word1 = "horse"
+# word2 = "ros"
+# word1 = ""
+# word2 = "a"
+result = solve.minDistance(word1, word2)
+print(result)
