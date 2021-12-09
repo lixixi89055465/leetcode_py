@@ -66,6 +66,7 @@ class Solution:
 solve = Solution()
 # heights = [2, 1, 5, 6, 2, 3]
 heights = [2,4]
+heights = [3,1,3,2,2]
 
 result = solve.largestRectangleArea(heights)
 print(result)
