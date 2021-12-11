@@ -37,11 +37,50 @@ s1、s2、和 s3 都由小写英文字母组成
 
 class Solution:
     def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
-        pass
+        m = len(s1)
+        n = len(s2)
+        if m + n != len(s3):
+            return False
+        if not s3:
+            return True
+        f = [[False for _ in range(n + 1)] for _ in range(m + 1)]
+        f[0][0] = True
+        for i in range(m + 1):
+            for j in range(n + 1):
+                if i > 0:
+                    f[i][j] = f[i][j] or f[i - 1][j] and s1[i - 1] == s3[i + j - 1]
+                if j > 0:
+                    f[i][j] = f[i][j] or f[i][j - 1] and s2[j - 1] == s3[i + j - 1]
+        return f[m][n]
 
 
 solve = Solution()
+
 s1 = "aabcc"
 s2 = "dbbca"
 s3 = "aadbbcbcac"
-solve.isInterleave()
+
+# aabcc
+# dbbca
+# aadbb
+s1 = "aabcc"
+s2 = "dbbca"
+s3 = "aadbbcbcaco"
+#
+s1 = ""
+s2 = ""
+s3 = ""
+#
+s1 = "db"
+s2 = "b"
+s3 = "cbb"
+#
+s1 = "bbbbbabbbbabaababaaaabbababbaaabbabbaaabaaaaababbbababbbbbabbbbababbabaabababbbaabababababbbaaababaa"
+s2 = "babaaaabbababbbabbbbaabaabbaabbbbaabaaabaababaaaabaaabbaaabaaaabaabaabbbbbbbbbbbabaaabbababbabbabaab"
+s3 = "babbbabbbaaabbababbbbababaabbabaabaaabbbbabbbaaabbbaaaaabbbbaabbaaabababbaaaaaabababbababaababbababbbababbbbaaaabaabbabbaaaaabbabbaaaabbbaabaaabaababaababbaaabbbbbabbbbaabbabaabbbbabaaabbababbabbabbab"
+
+# s1 = "a"
+# s2 = ""
+# s3 = "a"
+result = solve.isInterleave(s1, s2, s3)
+print(result)
