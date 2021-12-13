@@ -34,19 +34,15 @@
 
 
 class Solution:
-    def generate(self, numRows: int):
-        if numRows == 0:
-            return []
-        ret = []
-        for i in range(0, numRows):
-            ret.append(1)
-            for j in range(1, i):
-                ret[i].append(ret[i - 1][j - 1] + ret[i - 1][j])
-            ret.append(1)
+    def getRow(self, numRows: int):
+        ret = [0] * (numRows + 1)
+        ret[0]=1
+        for i in range(1, numRows+1):
+            ret[i]=ret[i-1]*(numRows-i+1)//i
         return ret
 
 
 solve = Solution()
-numRows = 2
-result = solve.generate(numRows)
+numRows = 3
+result = solve.getRow(numRows)
 print(result)
