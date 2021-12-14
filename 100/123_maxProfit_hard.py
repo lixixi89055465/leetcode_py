@@ -41,10 +41,38 @@
 
 class Solution:
     def maxProfit(self, prices: list) -> int:
-        pass
+        n = len(prices)
+        left = []
+        right = []
+        leftMin = prices[0]
+        leftMax = 0
+        rightMin = prices[-1]
+        rightMax = 0
+        left.append(0)
+        right.append(0)
+        for i in range(1, n):
+            if prices[i] - leftMin > leftMax:
+                leftMax = prices[i] - leftMin
+            left.append(leftMax)
+            if leftMin > prices[i]:
+                leftMin = prices[i]
+
+            if rightMin - prices[n - i - 1] > rightMax:
+                rightMax = rightMin - prices[n - i - 1]
+            right.append(rightMax)
+            if rightMin < prices[n - i - 1]:
+                rightMin = prices[n - i - 1]
+        # print(left)
+        # print(right)
+        ret = 0
+        for i in range(0, n):
+            ret = max(ret, left[i] + right[n - i - 1])
+        return ret
 
 
 solve = Solution()
-prices = [3, 3, 5, 0, 0, 3, 1, 4]
+# prices = [3, 3, 5, 0, 0, 3, 1, 4]
+# prices = [7,6,4,3,1]
+prices = [1]
 result = solve.maxProfit(prices)
 print(result)
