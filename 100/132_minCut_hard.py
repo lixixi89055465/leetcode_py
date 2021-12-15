@@ -34,17 +34,23 @@ class Solution:
         dp = [[True] * n for _ in range(n)]
         for i in range(1, n):
             for j in range(n - i):
-                dp[i][i + j] = s[i] == s[i + j] and dp[j + 1][j + i - 1]
+                dp[j][i + j] = s[j] == s[i + j] and dp[j + 1][j + i - 1]
+
         ret = [0] * n
         for i in range(1, n):
+            if dp[0][i]:
+                ret[i] = 0
+                continue
             ret[i] = ret[i - 1] + 1
-            for j in range(i):
+            for j in range(1,i):
                 if dp[j][i]:
-                    ret[i] = ret[j] + dp[j][i]
-        print(ret)
+                    ret[i] = min(ret[i], ret[j - 1] + 1)
+        return ret[-1]
 
 
 solve = Solution()
-s = "efe"
+s = "cdd"
+s = "aab"
+s = "aba"
 result = solve.minCut(s)
 print(result)
