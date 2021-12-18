@@ -31,11 +31,105 @@
 
 class Solution:
     def maxProfit(self, k: int, prices) -> int:
-        pass
+        i = 0
+        while i < len(prices) - 1:
+            if prices[i] == prices[i + 1]:
+                prices.pop(i)
+            else:
+                i += 1
+        if not prices or len(prices) <= 1:
+            return 0
 
+        left = 0
+        right = 0
+        n = len(prices)
+        i = 0
+        ret = 0
+        buys = []
+        sells = []
+        while i < n:
+            while i < n - 1 and prices[i] == prices[i + 1]:
+                i += 1
+            if i == 0:
+                if prices[i] < prices[i + 1]:
+                    left = prices[i]
+                    buys.append(left)
+            elif i == n - 1:
+                if prices[i] > prices[i - 1]:
+                    right = prices[i]
+                    sells.append(right)
+                    ret += right - left
+
+            elif prices[i] < prices[i + 1] and prices[i] < prices[i - 1]:
+                left = prices[i]
+                buys.append(left)
+            elif prices[i] > prices[i + 1] and prices[i] > prices[i - 1]:
+                right = prices[i]
+                ret += right - left
+                sells.append(right)
+            i += 1
+        # print(ret)
+        # print(buys)
+        # print(sells)
+        maxK = len(buys)
+        if maxK <= k:
+            return sum(sells) - sum(buys)
+        mk = len(buys)
+        for k in range(k, mk):
+            c = [j - i for i, j in zip(buys, sells)]
+            mk = len(c)
+            index = c.index(min(c))
+            if index == mk - 1:
+                if sells[-1] > sells[-2]:
+                    sells.pop(-2)
+                    buys.pop(-1)
+                else:
+                    sells.pop()
+                    buys.pop()
+            elif index == 0:
+                if buys[0] < buys[1]:
+                    sells.pop(0)
+                    buys.pop(1)
+                else:
+                    buys.pop(0)
+                    sells.pop(0)
+            else:
+                if sells[index] - sells[index - 1] <= sells[index] - buys[index] and sells[index + 1] - sells[index] <= \
+                        sells[index] - buys[index]:
+                    buys.pop(index)
+                    sells.pop(index)
+                elif sells[index] - sells[index - 1] < sells[index + 1] - sells[index]:
+                    buys.pop(index + 1)
+                    sells.pop(index)
+                else:
+                    buys.pop(index - 1)
+                    sells.pop(index)
+
+
+        return sum(sells) - sum(buys)
 
 solve = Solution()
+# k = 2
+# prices = [3, 2, 6, 5, 0, 3]
+# k = 2
+# prices = [2,4,1]
+# k = 1
+# prices = [1]
+# k = 2
+# prices = [2, 2, 5]
+# k = 1
+# prices = [3, 3]
 k = 2
-prices = [3, 2, 6, 5, 0, 3]
+prices = [3, 3, 5, 0, 0, 3, 1, 4]
+k = 2
+prices = [1, 2, 4, 2, 5, 7, 2, 4, 9, 0, 9]
+# k = 2
+# prices = [1, 3, 5, 4, 3, 7, 6, 9, 2, 4]
+k = 2
+prices = [2, 6, 8, 7, 8, 7, 9, 4, 1, 2, 4, 5, 8]
+# k = 2
+# prices = [0, 8, 5, 7, 4, 7]
+# k = 5
+# prices = [1, 4, 7, 5, 6, 2, 5, 1, 9, 7, 9, 7, 0, 6, 8]
 result = solve.maxProfit(k, prices)
 print(result)
