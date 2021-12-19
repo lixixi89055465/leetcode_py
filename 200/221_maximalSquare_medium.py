@@ -33,24 +33,25 @@ class Solution:
     def maximalSquare(self, matrix: list) -> int:
         m = len(matrix)
         n = len(matrix[0])
-        dp = matrix
-        maxLen = max(matrix[0])
-        for i in range(1, m):
-            for j in range(1, n):
-                if dp[i][j] != 0:
-                    dp[i][j] = min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]) + 1
-            if maxLen < max(dp[i]):
-                maxLen = max(matrix[i])
+        dp = [[0] * n for _ in range(m)]
+        maxLen = 0
 
-        return maxLen
+        for i in range(0, m):
+            for j in range(0, n):
+                if matrix[i][j] == "1":
+                    if i == 0 or j == 0:
+                        dp[i][j] = 1
+                    else:
+                        dp[i][j] = min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]) + 1
+            if maxLen < max(dp[i]):
+                maxLen = max(dp[i])
+
+        return maxLen * maxLen
 
 
 solve = Solution()
-matrix = [
-    [1, 0, 1, 0, 0],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 1, 1],
-    [1, 0, 0, 1, 0]
-]
+# matrix = [["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]]
+# matrix = [["0", "1"], ["1", "0"]]
+matrix = [["1"]]
 result = solve.maximalSquare(matrix)
 print(result)

@@ -31,82 +31,22 @@
 
 class Solution:
     def maxProfit(self, k: int, prices) -> int:
-        i = 0
-        while i < len(prices) - 1:
-            if prices[i] == prices[i + 1]:
-                prices.pop(i)
-            else:
-                i += 1
-        if not prices or len(prices) <= 1:
+        if not prices:
             return 0
-
-        left = 0
-        right = 0
         n = len(prices)
-        i = 0
-        ret = 0
-        buys = []
-        sells = []
-        while i < n:
-            while i < n - 1 and prices[i] == prices[i + 1]:
-                i += 1
-            if i == 0:
-                if prices[i] < prices[i + 1]:
-                    left = prices[i]
-                    buys.append(left)
-            elif i == n - 1:
-                if prices[i] > prices[i - 1]:
-                    right = prices[i]
-                    sells.append(right)
-                    ret += right - left
+        k = min(k, n // 2)
+        buy = [[0] * (k + 1) for _ in range(n)]
+        sell = [[0] * (k + 1) for _ in range(n)]
+        buy[0][0], sell[0][0] = -prices[0], 0
+        for i in range(1, k + 1):
+            buy[0][i] = sell[0][i] = float('-inf')
+        for i in range(1, n):
+            buy[i][0] = max(buy[i - 1][0], sell[i - 1][0] - prices[i])
+            for j in range(1, k + 1):
+                buy[i][j] = max(buy[i - 1][j], sell[i - 1][j] - prices[i])
+                sell[i][j] = max(sell[i - 1][j], buy[i - 1][j - 1] + prices[i])
+        return max(sell[n - 1])
 
-            elif prices[i] < prices[i + 1] and prices[i] < prices[i - 1]:
-                left = prices[i]
-                buys.append(left)
-            elif prices[i] > prices[i + 1] and prices[i] > prices[i - 1]:
-                right = prices[i]
-                ret += right - left
-                sells.append(right)
-            i += 1
-        # print(ret)
-        # print(buys)
-        # print(sells)
-        maxK = len(buys)
-        if maxK <= k:
-            return sum(sells) - sum(buys)
-        mk = len(buys)
-        for k in range(k, mk):
-            c = [j - i for i, j in zip(buys, sells)]
-            mk = len(c)
-            index = c.index(min(c))
-            if index == mk - 1:
-                if sells[-1] > sells[-2]:
-                    sells.pop(-2)
-                    buys.pop(-1)
-                else:
-                    sells.pop()
-                    buys.pop()
-            elif index == 0:
-                if buys[0] < buys[1]:
-                    sells.pop(0)
-                    buys.pop(1)
-                else:
-                    buys.pop(0)
-                    sells.pop(0)
-            else:
-                if sells[index] - sells[index - 1] <= sells[index] - buys[index] and sells[index + 1] - sells[index] <= \
-                        sells[index] - buys[index]:
-                    buys.pop(index)
-                    sells.pop(index)
-                elif sells[index] - sells[index - 1] < sells[index + 1] - sells[index]:
-                    buys.pop(index + 1)
-                    sells.pop(index)
-                else:
-                    buys.pop(index - 1)
-                    sells.pop(index)
-
-
-        return sum(sells) - sum(buys)
 
 solve = Solution()
 # k = 2
