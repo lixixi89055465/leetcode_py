@@ -36,15 +36,17 @@
 class Solution:
     def lengthOfLIS(self, nums: list) -> int:
         dp = []
-        for i1, v1 in enumerate(nums[1:]):
+        for i1, v1 in enumerate(nums):
             dp.append(1)
-            for i2, v2 in enumerate(dp[:-1]):
+            for i2, v2 in enumerate(dp):
                 if nums[i1] > nums[i2]:
-                    dp[i1] = max(dp[i1], dp[i2] + 1)
+                    dp[i1] = max(dp[-1], dp[i2] + 1)
         return max(dp)
 
 
 solve = Solution()
-nums = [10, 9, 2, 5, 3, 7, 101, 18]
+# nums = [10, 9, 2, 5, 3, 7, 101, 18]
+# nums = [0, 1, 0, 3, 2, 3]
+nums = [7,7,7,7,7,7,7]
 result = solve.lengthOfLIS(nums)
 print(result)

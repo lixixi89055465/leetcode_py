@@ -30,11 +30,13 @@ class Solution:
             dp[i] = min(num2, num3, num5)
             if dp[i] == num2:
                 p2 += 1
-            if dp[i] == num3:
+            elif dp[i] == num3:
                 p3 += 1
-            if dp[i] == num5:
+            elif dp[i] == num5:
                 p5 += 1
-        return dp[n]
+        return dp[-1]
+
+
 
 
 solve = Solution()

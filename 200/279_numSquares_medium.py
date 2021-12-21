@@ -33,15 +33,15 @@ class Solution:
                 dp[i] = 1
                 continue
             maxS = 100000
-            for j in range(1, int(math.sqrt(i))+1):
-                if maxS > dp[j*j] + dp[i - j*j]:
-                    maxS = dp[j*j] + dp[i - j*j]
+            for j in range(1, int(math.sqrt(i)) + 1):
+                if maxS > dp[j * j] + dp[i - j * j]:
+                    maxS = dp[j * j] + dp[i - j * j]
             dp[i] = maxS
         return dp[-1]
 
 
 solve = Solution()
-n=12
+n = 12
 # n=13
 # n=7691
 # n=7217
