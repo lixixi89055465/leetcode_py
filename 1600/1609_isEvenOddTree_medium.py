@@ -48,6 +48,7 @@
 
 输入：root = [11,8,6,1,3,9,11,30,20,18,16,12,10,4,2,17]
 输出：true
+[11,18,14,3,7,null,null,null,null,18,null,6]
 '''
 
 
@@ -59,6 +60,45 @@ class TreeNode:
         self.right = right
 
 
+class Solution:
+    def isEvenOddTree(self, root: TreeNode) -> bool:
+        queue = [root]
+        level = 0
+        while queue:
+            prev = float('inf') if level % 2 else 0
+            nxt = []
+            for node in queue:
+                val = node.val
+                if val % 2 == level % 2 or level % 2 == 0 and val <= prev or level % 2 == 1 and val >= prev:
+                    return False
+                prev = val
+                if node.left:
+                    nxt.append(node.left)
+                if node.right:
+                    nxt.append(node.right)
+            queue = nxt
+            level += 1
+        return True
+
+
+solve = Solution()
+
+r12 = TreeNode(12, None, None)
+r8 = TreeNode(8, None, None)
+r6 = TreeNode(6, None, None)
+r7 = TreeNode(7, r6, None)
+r5 = TreeNode(5, None, None)
+r3 = TreeNode(3, r12, r8)
+r2 = TreeNode(2, None, None)
+r9 = TreeNode(9, None, r2)
+r4 = TreeNode(4, r7, r9)
+r10 = TreeNode(10, r3, None)
+r1 = TreeNode(1, r10, r4)
+r1 = TreeNode(1, None, None)
+
+result = solve.isEvenOddTree(r1)
+print(result)
+'''
 class Solution:
     def isEvenOddTree(self, root: TreeNode) -> bool:
         if root.val % 2 == 0:
@@ -85,21 +125,4 @@ class Solution:
             q = q[ql:]
         return True
 
-
-solve = Solution()
-
-r12 = TreeNode(12, None, None)
-r8 = TreeNode(8, None, None)
-r6 = TreeNode(6, None, None)
-r7 = TreeNode(7, r6, None)
-r5 = TreeNode(5, None, None)
-r3 = TreeNode(3, r12, r8)
-r2 = TreeNode(2, None, None)
-r9 = TreeNode(9, None, r2)
-r4 = TreeNode(4, r7, r9)
-r10 = TreeNode(10, r3, None)
-r1 = TreeNode(1, r10, r4)
-r1 = TreeNode(1, None, None)
-
-result = solve.isEvenOddTree(r1)
-print(result)
+'''
