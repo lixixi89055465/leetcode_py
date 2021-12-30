@@ -31,22 +31,18 @@
 
 class Solution:
     def maxProfit(self, k: int, prices) -> int:
-        if not prices:
-            return 0
         n = len(prices)
-        k = min(k, n // 2)
-        buy = [[0] * (k + 1) for _ in range(n)]
-        sell = [[0] * (k + 1) for _ in range(n)]
-        buy[0][0], sell[0][0] = -prices[0], 0
+        sells = [[0] * (k + 1) for _ in range(n)]
+        buys = [[0] * (k + 1) for _ in range(n)]
+        buys[0][0], sells[0][0] = -prices[0], 0
         for i in range(1, k + 1):
-            buy[0][i] = sell[0][i] = float('-inf')
+            buys[0][i] = sells[0][i] = float('-inf')
         for i in range(1, n):
-            buy[i][0] = max(buy[i - 1][0], sell[i - 1][0] - prices[i])
+            buys[i][0] = max(buys[i - 1][0], sells[i - 1][0] - prices[i])
             for j in range(1, k + 1):
-                buy[i][j] = max(buy[i - 1][j], sell[i - 1][j] - prices[i])
-                sell[i][j] = max(sell[i - 1][j], buy[i - 1][j - 1] + prices[i])
-
-        return max(sell[n - 1])
+                buys[i][j] = max(buys[i - 1][j], sells[i - 1][j] - prices[j])
+                sells[i][j] = max(sells[i - 1][j], buys[i - 1][j - 1] + prices[j])
+        return max(sells[n - 1])
 
 
 solve = Solution()
@@ -56,21 +52,21 @@ solve = Solution()
 # prices = [2,4,1]
 # k = 1
 # prices = [1]
-# k = 2
-# prices = [2, 2, 5]
+k = 2
+prices = [2, 2, 5]
 # k = 1
 # prices = [3, 3]
-k = 2
-prices = [3, 3, 5, 0, 0, 3, 1, 4]
-k = 2
-prices = [1, 2, 4, 2, 5, 7, 2, 4, 9, 0, 9]
+# k = 2
+# prices = [3, 3, 5, 0, 0, 3, 1, 4]
+# k = 2
+# prices = [1, 2, 4, 2, 5, 7, 2, 4, 9, 0, 9]
 # k = 2
 # prices = [1, 3, 5, 4, 3, 7, 6, 9, 2, 4]
-k = 2
-prices = [2, 6, 8, 7, 8, 7, 9, 4, 1, 2, 4, 5, 8]
+# k = 2
+# prices = [2, 6, 8, 7, 8, 7, 9, 4, 1, 2, 4, 5, 8]
 # k = 2
 # prices = [0, 8, 5, 7, 4, 7]
-# k = 5
-# prices = [1, 4, 7, 5, 6, 2, 5, 1, 9, 7, 9, 7, 0, 6, 8]
+k = 5
+prices = [1, 4, 7, 5, 6, 2, 5, 1, 9, 7, 9, 7, 0, 6, 8]
 result = solve.maxProfit(k, prices)
 print(result)
