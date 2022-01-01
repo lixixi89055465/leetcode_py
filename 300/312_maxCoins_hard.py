@@ -41,8 +41,10 @@ class Solution:
             na = len(arr)
             if na == 1:
                 return nums[0] * extra + max(nums[0], extra) ** 2
+            elif na == 2:
+                return nums[0] * nums[1] + max(nums) ** 2
             else:
-                return max(dp[na - 1] + arr[n - 1] * extra, dfs(arr[:-1] + arr[-2] * arr[-1] * arr))
+                return max(dp[na - 1] + arr[na - 1] * extra, dfs(arr[:-1] + arr[-2] * arr[-1] * extra, extra))
 
         for i in range(n):
             dp[i] = max(dp[i - 1] + nums[i - 1] * nums[i],
