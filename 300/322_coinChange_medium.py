@@ -42,18 +42,28 @@
 
 class Solution:
     def coinChange(self, coins, amount) -> int:
-        dp = [-1] * len(amount + 1)
+        dp = [-1] * (amount + 1)
         dp[0] = 0
         for i in range(1, amount + 1):
+            maxL = amount
             for j in coins:
-                if i - j >= 0:
-                    dp[i] = min(dp[i], dp[i - j] + 1)
-            print(dp)
-        return 0
+                if i - j >= 0 and dp[i - j] >= 0:
+                    maxL = min(maxL, dp[i - j] + 1)
+                    dp[i] = maxL
+        return dp[-1]
 
 
 solve = Solution()
-coins = [1, 2, 5]
-amount = 11
+# coins = [1, 2, 5]
+# amount = 11
+# coins = [2]
+# amount = 3
+# coins = [1]
+# amount = 0
+# coins = [1]
+# amount = 1
+coins = [1]
+amount = 2
 result = solve.coinChange(coins, amount)
+
 print(result)
