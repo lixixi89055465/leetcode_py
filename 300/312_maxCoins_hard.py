@@ -31,24 +31,20 @@ n == nums.length
 class Solution:
     def maxCoins(self, nums) -> int:
         n = len(nums)
-        if n == 1:
-            return nums[0]
-        elif n == 2:
-            return nums[0] * nums[1] + max(nums) ** 2
-        dp = [0] * (n + 1)
+        val = [1] + nums + [1]
 
-        def dfs(arr, extra):
-            na = len(arr)
-            if na == 1:
-                return nums[0] * extra + max(nums[0], extra) ** 2
-            elif na == 2:
-                return nums[0] * nums[1] + max(nums) ** 2
-            else:
-                return max(dp[na - 1] + arr[na - 1] * extra, dfs(arr[:-1] + arr[-2] * arr[-1] * extra, extra))
+        @lru_cache(None)
+        def solve(left: int, right: int) -> int:
+            if left >= right - 1:
+                return 0
+            best = 0
+            for i in range(left + 1, right):
+                total = val[left] * val[i] * val[right]
+                total += solve(left, i) + solve(i, right)
+                best = max(best, total)
+            return best
 
-        for i in range(n):
-            dp[i] = max(dp[i - 1] + nums[i - 1] * nums[i],
-                        dfs(nums[:i - 1], nums[i]) + nums[i - 2] * nums[i - 1] * nums[i])
+        return solve(0, n + 1)
 
 
 solve = Solution()
