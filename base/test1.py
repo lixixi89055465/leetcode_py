@@ -1,0 +1,5 @@
+s=(x*2 for x in range(5))
+print(s)
+a=list(s)
+print(tuple(s))
+print(list(s))
