@@ -65,7 +65,7 @@ from collections import deque
 
 
 class Solution:
-    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+    def secondMinimum(self, n: int, edges, time, change) -> int:
         graph = [[] for _ in range(n + 1)]
         for e in edges:
             x, y = e[0], e[1]
