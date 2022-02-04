@@ -34,16 +34,53 @@ Fn = Fn-1 + Fn-2 ， 其中 n > 2 。
 1 <= k <= 10^9
 通过次数12,016提交次数18,460
 '''
+'''
+1,1,2,3,5,8,13,21,34,55
+12:3
+13:1
+14:2:13+1
+15:2:13+2
+16:2:13+3
+17:3:13+4=13+3+1
+18:2:13+5
+19:3:13+6
+20:3:13+7
+21:1
+
+33:21+12(3):4
+   13+13+ 7 :4
+   21+12=21+8+4=21+8+3+1
+39:34+5
+40:34+6=34+5+1
+41:34+7=34+5+2
+42:34+8=2
+54:34+20
+
+'''
 
 
 class Solution:
     def findMinFibonacciNumbers(self, k: int) -> int:
-        pass
+        f1 = 1
+        f2 = 1
+        f = [f1, f2]
+        while f[-1] < k:
+            f.append(f[-1] + f[-2])
+        i = len(f) - 1
+        ans = 0
+        while k > 0:
+            if f[i] < k:
+                k = k - f[i]
+                ans += 1
+            elif f[i] == k:
+                return ans + 1
+            i -= 1
+        return ans
 
 
 solve = Solution()
 k = 7
+k = 10
+k = 19
 result = solve.findMinFibonacciNumbers(k)
 print(result)
-
-
