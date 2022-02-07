@@ -38,18 +38,20 @@ class TreeNode:
         self.right = right
 
 
-from collections import deque
-
-
 class Solution:
-    ans = True
-
-    def getM(self, root, lower: float('-inf'), upper: float('inf')):
-
     def isValidBST(self, root: TreeNode) -> bool:
-        if root.left and root.left.val > root.val:
-            return root.left.val < root.val and self.getM(root.left, float('-inf'), root.val)
-        return True
+        def helper(node, lower=float('-inf'), upper=float('inf')):
+            if not node:
+                return True
+            if lower >= node.val or node.val >= upper:
+                return False
+            if not helper(node.left, lower, node.val):
+                return False
+            if not helper(node.right, node.val, upper):
+                return False
+            return True
+
+        return helper(root)
 
 
 solve = Solution()
