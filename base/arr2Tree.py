@@ -1,13 +1,16 @@
 from collections import deque
+
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 
-root = [5, 4, 8, 11, None, 13, 4, 7, 2, None, None, None, 1]
+
 targetSum = 22
 
+root = [5, 4, 8, 11, None, 13, 4, 7, 2, None, None, None, 1]
 q = deque(root)
 s = deque()
 r1 = TreeNode(q.popleft())
@@ -28,3 +31,4 @@ while s and q:
         s.append(a1.right)
     else:
         s.append(None)
+root = r1
