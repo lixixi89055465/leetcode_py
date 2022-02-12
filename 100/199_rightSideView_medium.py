@@ -62,9 +62,8 @@ class Solution:
 
 
 solve = Solution()
-root = [1, 2, 3, None, 5, None, 4]
 
-# root = [5, 4, 8, 11, None, 13, 4, 7, 2, None, None, None, 1]
+root = [1, 2, 3, None, 5, None, 4]
 q = deque(root)
 s = deque()
 r1 = TreeNode(q.popleft())
