@@ -24,23 +24,39 @@
 
 '''
 
+
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
+
+
 class Solution:
     def sumOfLeftLeaves(self, root: TreeNode) -> int:
-        pass
+        ans = 0
 
+        def helper(node, flag):
+            if not node:
+                return
+            helper(node.left, False)
+            helper(node.right, True)
+            nonlocal ans
+            if flag == 0 and not node.left and not node.right:
+                ans += node.val
+
+        helper(root, True)
+        return ans
 
 
 from collections import deque
 
 solve = Solution()
 # root = [3, 2, 3, None, 3, None, 1]
-root = [3, 4, 5, 1, 3, None, 1]
+# root = [3, 4, 5, 1, 3, None, 1]
+# root = [3, 9, 20, None, None, 15, 7]
+root = [1]
 q = deque(root)
 s = deque()
 r1 = TreeNode(q.popleft())
@@ -64,5 +80,5 @@ while s and q:
     else:
         s.append(None)
 
-result = solve.rob(r1)
+result = solve.sumOfLeftLeaves(r1)
 print(result)
