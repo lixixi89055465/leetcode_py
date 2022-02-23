@@ -37,3 +37,63 @@ lRUCache.get(4);    // 返回 4
 0 <= value <= 105
 最多调用 2 * 105 次 get 和 put
 '''
+
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+from collections import *
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = deque()
+        self.m = defaultdict()
+
+    def get(self, key: int) -> int:
+        if key in self.m:
+            self.cache.remove(key)
+            self.cache.append(key)
+            return self.m[key]
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.m:
+            self.m[key] = value
+            self.cache.remove(key)
+            self.cache.append(key)
+            return
+        if len(self.cache) < self.capacity:
+            self.m[key] = value
+            self.cache.append(key)
+        else:
+            re = self.cache.popleft()
+            self.m.pop(re)
+            self.cache.append(key)
+            self.m[key] = value
+
+
+# L = LRUCache(2)
+# L.put(1, 1)
+# L.put(2, 2)
+# print(L.get(1))
+# L.put(3, 3)
+# print(L.get(2))
+# L.put(4, 4)
+# print(L.get(1))
+# print(L.get(3))
+# print(L.get(4))
+
+
+L = LRUCache(2)
+L.put(2, 1)
+L.put(2, 2)
+print(L.get(2))
+L.put(1, 1)
+L.put(4, 1)
+print(L.get(2))
