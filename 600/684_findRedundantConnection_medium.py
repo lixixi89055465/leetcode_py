@@ -36,17 +36,17 @@ edges 中无重复元素
 
 
 class Solution:
-    def findRedundantConnection(self, edges):
+    def findRedundantDirectedConnection(self, edges):
         n = len(edges)
         parent = list(range(n + 1))
+
+        def union(index1, index2):
+            parent[find(index1)] = find(index2)
 
         def find(index):
             if parent[index] != index:
                 parent[index] = find(parent[index])
             return parent[index]
-
-        def union(node1, node2):
-            parent[find(node1)] = find(node2)
 
         for node1, node2 in edges:
             if find(node1) != find(node2):
@@ -56,6 +56,9 @@ class Solution:
 
 
 solve = Solution()
-edges = [[1, 2], [1, 3], [2, 3]]
-result = solve.findRedundantConnection(edges)
+# edges = [[1, 2], [1, 3], [2, 3]]
+# edges = [[1, 2], [2, 3], [3, 4], [4, 1], [1, 5]]
+# edges = [[1, 2], [1, 3], [2, 3]]
+edges = [[2, 1], [3, 1], [4, 2], [1, 4]]
+result = solve.findRedundantDirectedConnection(edges)
 print(result)
