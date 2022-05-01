@@ -34,10 +34,27 @@ edges[i].length == 2
 
 class Solution:
     def findRedundantDirectedConnection(self, edges):
-        pass
+        n = len(edges)
+        parent = list(range(n + 1))
+
+        def union(index1, index2):
+            parent[find(index1)] = find(index2)
+
+        def find(index):
+            if parent[index] != index:
+                parent[index] = find(parent[index])
+            return parent[index]
+
+        for node1, node2 in edges:
+            if find(node1) != find(node2):
+                union(node1, node2)
+            else:
+                return [node1, node2]
 
 
 solve = Solution()
-edges = [[1, 2], [1, 3], [2, 3]]
-result = solve.findRedundantConnection(edges)
+# edges = [[1, 2], [1, 3], [2, 3]]
+# edges = [[1, 2], [2, 3], [3, 4], [4, 1], [1, 5]]
+edges = [[2, 1], [3, 1], [4, 2], [1, 4]]
+result = solve.findRedundantDirectedConnection(edges)
 print(result)
