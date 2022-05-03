@@ -48,35 +48,42 @@ class ListNode:
 
 
 class Solution:
-    def __init__(self, mem):
-        def swap(left, right):
-            tmp = mem[left]
-            mem[left] = mem[right]
-            mem[right] = tmp
+    def mergeKLists(self, lists):
+        def mergeTwo(l1, l2):
+            ans = ListNode(0, None)
+            head = ans
+            while l1 and l2:
+                if l1.val < l2.val:
+                    head.next = l1
+                    l1 = l1.next
+                else:
+                    head.next = l2
+                    l2 = l2.next
+                head = head.next
+            if not l1:
+                l1 = l2
+            while l1:
+                head.next = l1
+                head = head.next
+                l1 = l1.next
+            return ans.next
 
-        n = (len(mem) - 1) // 2
-
-        def adj(k):
-            while k >= 0:
-                index = k
-                if mem[k * 2] > mem[k]:
-                    index = k * 2
-                if k * 2 + 1 < len(mem) and mem[k] < mem[k * 2 + 1]:
-                    index = k * 2 + 1
-                if index != k:
-                    swap(k, index)
-                k -= 1
-
-        for i in range(n, -1, -1):
-            adj(i)
-        print(mem)
-
-    def deleteNode(self, ):
-
-        def mergeKLists(self, lists):
-            pass
+        n = len(lists)
+        if n == 0:
+            return None
+        elif n == 1:
+            return lists[0]
+        elif n == 2:
+            return mergeTwo(lists[0], lists[1])
+        else:
+            return mergeTwo(self.mergeKLists(lists[n // 2:]), self.mergeKLists(lists[:n // 2]))
 
 
-mem = [49, 25, 54, 3, 6, 85, 45, 23, 10]
-solve = Solution(mem)
-# print(solve.mem)
+# lists = [[1, 4, 5], [1, 3, 4], [2, 6]]
+solve = Solution()
+node1 = ListNode(1, ListNode(4, ListNode(5, None)))
+node2 = ListNode(1, ListNode(3, ListNode(4, None)))
+node3 = ListNode(2, ListNode(6, None))
+lists = [node1, node2, node3]
+result = solve.mergeKLists(lists)
+print(result)
