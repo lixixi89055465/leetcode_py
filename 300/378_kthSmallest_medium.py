@@ -17,6 +17,18 @@
 输入：matrix = [[-5]], k = 1
 输出：-5
 
+[1,  5, 9],
+[10,11,13],
+[12,13,15]]
+k = 8
+[1, 10,11],
+[10,11,13],
+[10,13,15]]
+###
+[1,  3, 4,13],
+[10,11,12,15],
+[12,13,15,16]]
+[12,15,17,19]]
 
 提示：
 
@@ -37,7 +49,28 @@ n == matrix[i].length
 
 class Solution:
     def kthSmallest(self, matrix, k):
-        pass
+        n = len(matrix)
+
+        def check(mid):
+            i, j = n - 1, 0
+            num = 0
+            while i >= 0 and j < n:
+                if matrix[i][j] <= mid:
+                    num += i + 1
+                    j += 1
+                else:
+                    i -= 1
+            return num >= k
+
+        left, right = matrix[0][0], matrix[-1][-1]
+        while left < right:
+            mid = (left + right) // 2
+            a = check(mid)
+            if a:
+                right = mid
+            else:
+                left = mid + 1
+        return left
 
 
 solve = Solution()
