@@ -38,16 +38,40 @@
 tasks[i] 是大写英文字母
 n 的取值范围为 [0, 100]
 '''
+import collections
+import heapq
 
 
 class Solution:
     def leastInterval(self, tasks, n):
-
-        pass
+        freq = collections.Counter(tasks)
+        m = len(freq)
+        time = 0
+        nextValid = [1] * m
+        taskValid = list(freq[i] for i in freq)
+        print(taskValid)
+        for i in range(len(tasks)):
+            time += 1
+            minNextValid = min(nextValid[j] for j in range(m) if taskValid[j] > 0)
+            time = max(time, minNextValid)
+            best = -1
+            for j in range(m):
+                if nextValid[j] <= time and taskValid[j] > 0:
+                    if best == -1 or taskValid[best] < taskValid[j]:
+                        best=j
+            nextValid[best] = time + n + 1
+            taskValid[best] -= 1
+        return time
 
 
 solve = Solution()
-tasks = ["A", "A", "A", "B", "B", "B"]
+# tasks = ["A", "A", "A", "A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "D", "E", "F", "G"]
+# n = 2
+# tasks = ["A","A","A","B","B","B"]
+# n = 2
+# tasks = ["A","A","A","B","B","B"]
+# n = 0
+tasks = ["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"]
 n = 2
-result = solve.leastInterval(tasks, 2)
+result = solve.leastInterval(tasks, n)
 print(result)
