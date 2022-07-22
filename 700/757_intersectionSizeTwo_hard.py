@@ -29,10 +29,21 @@ intervals[i][j] 的值是 [0, 10^8]范围内的整数。
 
 class Solution:
     def intersectionSizeTwo(self, intervals) -> int:
-        pass
-
+        intervals.sort(key=lambda x:(x[1],-x[0]))
+        li=[-1,-1]
+        for  x in intervals:
+            if x[0]<=li[-2]:
+                continue
+            elif x[0] <= li[-1]:
+                li.append(x[1])
+            elif x[1]>li[-1]:
+                li.append(x[1]-1)
+                li.append(x[1])
+        print(li)
+        return len(li)-2
 
 solve = Solution()
-intervals = [[1, 3], [1, 4], [2, 5], [3, 5]]
+# intervals = [[1, 3], [1, 4], [2, 5], [3, 5]]
+intervals = [[1, 2], [2, 3], [2, 4], [4, 5]]
 result = solve.intersectionSizeTwo(intervals)
 print(result)
