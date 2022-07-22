@@ -35,20 +35,37 @@ s 由英文字母、数字、符号和空格组成
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        m = dict()
-        left = 0
-        ans = 0
-        mans = 0
-        for i, c in enumerate(s):
-            if m.__contains__(c) and m[c] >= left:
-                left = m[c] + 1
-                m[c] = i
-                ans = i - left + 1
+        from collections import Counter
+        m=Counter()
+        left=0
+        mans=0
+        ans=0
+        for i,c in enumerate(s):
+            if c in m and m[c]>=left:
+                left=m[c]+1
+                m[c]=i
+                ans=i-left+1
             else:
-                m[c] = i
-                ans += 1
-            mans = max(mans, ans)
+                m[c]=i
+                ans+=1
+            mans=max(mans,ans)
         return mans
+
+
+        # m = dict()
+        # left = 0
+        # ans = 0
+        # mans = 0
+        # for i, c in enumerate(s):
+        #     if m.__contains__(c) and m[c] >= left:
+        #         left = m[c] + 1
+        #         m[c] = i
+        #         ans = i - left + 1
+        #     else:
+        #         m[c] = i
+        #         ans += 1
+        #     mans = max(mans, ans)
+        # return mans
 
 
 solve = Solution()
@@ -56,5 +73,6 @@ s = "abcabcbb"
 # s = "bbbbb"
 # s = "pwwkew"
 # s = "abba"
+# s="aab"
 result = solve.lengthOfLongestSubstring(s)
 print(result)
