@@ -47,51 +47,48 @@ nums 是 [1, n] 范围内所有整数的排列
 1 <= sequences[i][j] <= n
 sequences 的所有数组都是 唯一 的
 sequences[i] 是 nums 的一个子序列
+10.11
+
 '''
-from collections import defaultdict, Counter
+from collections import defaultdict, deque
 
 
 class Solution:
     def sequenceReconstruction(self, nums, sequences) -> bool:
-        m = [[set() for i in range(2)] for _ in range(len(nums) + 1)]
+        m = defaultdict(list)
+        inDeg=[0]*len(nums)
         for i in sequences:
-            for j, vj in enumerate(i):
-                if j == 0:
-                    m[vj][1] = m[vj][1].union(set(i[1:]))
-                elif j == len(i) - 1:
-                    m[vj][0] = m[vj][0].union(set(i[:-1]))
-                else:
-                    m[vj][1] = m[vj][1].union(set(i[j + 1:]))
-                    m[vj][0] = m[vj][0].union(set(i[:j]))
-        print(m)
-        while True:
-            flag=False
-            for k,i in enumerate(m[1:]):
-                # left
-                if len(i[0])<k:
-                    left = i[0]
-                    for j in i[0]:
-                        left= left.union(m[j][0])
-                    if len(i[0])<len(left):
-                        flag=True
-                    i[0]=left
-                #right
-                if len(i[1])<k :
-                    right=i[1]
-                    for j in i[1]:
-                        right=right.union(m[j][1])
-                    if len(i[1])<len(right):
-                        flag=True
-                    i[1]=right
-            if flag==False:
-                break
-        print(m)
+            for j in range(1, len(i)):
+                m[i[j - 1]-1].append(i[j]-1)
+                inDeg[i[j]-1]+=1
+        d = deque([i for i,v in enumerate(inDeg) if v==0])
+        while d:
+            if len(d)>1:
+                return False
+            a = d.popleft();
+            i=m[a]
+            m.pop(a)
+            for j in i:
+                inDeg[j]-=1
+                if inDeg[j]==0:
+                    d.append(j)
+        return True
+
+
 
 
 
 solve = Solution()
 nums = [1, 2, 3, 4, 5, 6, 7]
 # sequences = [[1, 2, 3], [1, 3, 6], [6, 7], [3, 4, 5, 6]]
-sequences = [[1, 2], [2, 3], [3, 4], [5, 6],[6,7],[4,5]]
+# sequences = [[1, 2], [2, 3], [3, 4], [5, 6],[6,7],[4,5]]
+nums = [1, 2, 3, 4, 5, 6]
+sequences = [[1, 2, 3, 6], [2, 4, 6], [2, 5, 6]]
+# nums = [1,2,3]
+# sequences = [[1,2],[1,3],[2,3]]
+# nums = [1,2,3]
+# sequences = [[1,2],[1,3]]
+nums = [1,2,3]
+sequences = [[1,2]]
 result = solve.sequenceReconstruction(nums, sequences)
 print(result)
