@@ -36,24 +36,48 @@ from collections import *
 class Solution:
 
     def canFinish(self, numCourses: int, prerequisites):
-        edges = defaultdict(list)
-        visited = [0] * numCourses
-        valid = True
+        edges=defaultdict(list)
+        visited=0
+        indeg=[0]*numCourses
         for i in prerequisites:
             edges[i[1]].append(i[0])
+            indeg[i[0]]+=1
+        q=deque([i for i in range(numCourses) if indeg[i] == 0])
+        while q:
+            u=q.popleft()
+            visited += 1
+            for v in edges[u]:
+                indeg[v]-=1
+                if indeg[v]==0:
+                    q.append(v)
+        return visited==numCourses
 
-        def dfs(u):
-            visited[u] = 1
-            nonlocal valid
-            for i in edges[u]:
-                if visited[i] == 0:
-                    dfs(i)
-                    if not valid:
-                        return
-                elif visited[i] == 1:
-                    valid = False
-                    return
-            visited[u] = 2
+
+
+
+
+
+
+        # def canFinish(self, numCourses: int, prerequisites):
+        #     edges = defaultdict(list)
+        #     visited = [0] * numCourses
+        #     result = list()
+        #     valid = True
+        #     for i in prerequisites:
+        #         edges[i[1]].append(i[0])
+        #     def dfs(u):
+        #         nonlocal valid
+        #         visited[u]=1
+        #         for v in edges[u]:
+        #             if visited[v]==0:
+        #                 dfs(v)
+        #                 if not valid:
+        #                     return
+        #             elif visited[v]==1:
+        #                 valid=False
+        #                 return
+        #         visited[u]=2
+        #         result.append(u)
 
         for i in range(numCourses):
             if valid and not visited[i]:
