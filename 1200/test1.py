@@ -1,5 +1,7 @@
-a = 133
-b = 131072
-c = a | b
-print(c)
-print(a&b)
+import random
+import math
+
+a=0.23
+print(math.ceil(a))
+
+
