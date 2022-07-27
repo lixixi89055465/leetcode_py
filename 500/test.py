@@ -1,5 +1,6 @@
-tMap={1:1}
-print(tMap[1])
 
-print(2 not in tMap.keys())
+import re
+s="18500942@qq.com"
 
+a=re.split('@|\.',s)
+print(a)
