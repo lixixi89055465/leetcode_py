@@ -32,27 +32,34 @@ prerequisites[i] 中的所有课程对 互不相同
 
 from collections import *
 
-
+from collections import defaultdict
 class Solution:
 
     def canFinish(self, numCourses: int, prerequisites):
         edges=defaultdict(list)
-        visited=0
-        indeg=[0]*numCourses
-        for i in prerequisites:
-            edges[i[1]].append(i[0])
-            indeg[i[0]]+=1
-        q=deque([i for i in range(numCourses) if indeg[i] == 0])
-        while q:
-            u=q.popleft()
-            visited += 1
-            for v in edges[u]:
-                indeg[v]-=1
-                if indeg[v]==0:
-                    q.append(v)
-        return visited==numCourses
+        for info in prerequisites:
+            edges[info[1]].append(info[0])
+        valid=True
+        visited=[0]*numCourses
+        result=[]
+        def dfs(u):
+            nonlocal valid
+            visited[u]=1
+            for i in edges[u]:
+                if visited[i]==0:
+                    dfs(i)
+                    if not valid:
+                        return
+                elif visited[i]==1:
+                    valid=False
+                    return
+            visited[u]=2
+            result.append(u)
 
-
+        for i in range(numCourses):
+            if visited and visited[i]==0:
+                dfs(i)
+        return result
 
 
 
