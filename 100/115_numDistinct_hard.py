@@ -46,7 +46,6 @@ class Solution:
             dp[i][n] = 1
         for i in range(m - 1, -1, -1):
             for j in range(n - 1, -1, -1):
-
                 if s[i] == t[j]:
                     dp[i][j] = dp[i + 1][j + 1] + dp[i + 1][j]
                 else:
