@@ -38,38 +38,29 @@ from collections import *
 
 class Solution:
     def findOrder(self, numCourses: int, prerequisites):
-        edges = defaultdict(list)
-        for i in prerequisites:
-            edges[i[1]].append(i[0])
-        visited = [0] * numCourses
-        valid = True
-        result = []
-
-        def dfs(u):
-            nonlocal valid
-            visited[u] = 1
-            for v in edges[u]:
-                if valid and not visited[v]:
-                    dfs(v)
-                    if not valid:
-                        return []
-                elif valid and visited[v] == 1:
-                    valid = False
-                    return []
-            visited[u] = 2
-            result.append(u)
-
-        for i in range(numCourses):
-            if valid and not visited[i]:
-                dfs(i)
-        if not valid:
+        edges=defaultdict(list)
+        indeg=[0]*numCourses
+        for info in prerequisites:
+            edges[info[1]].append(info[0])
+            indeg[info[0]]+=1
+        q=deque([i for i,v in enumerate(indeg) if v==0])
+        result=[]
+        while q:
+            p=q.popleft()
+            result.append(p)
+            for i in edges[p]:
+                indeg[i]-=1
+                if indeg[i]==0:
+                    q.append(i)
+        if len(result)!=numCourses:
             return []
-        return result[::-1]
+        return result
+
 
 
 solve = Solution()
-# numCourses = 4
-# prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2]]
+numCourses = 4
+prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2]]
 # numCourses = 2
 # prerequisites = [[1, 0], [0, 1]]
 # numCourses = 2
@@ -78,7 +69,7 @@ solve = Solution()
 # prerequisites = []
 # numCourses = 1
 # prerequisites = []
-numCourses = 3
-prerequisites = [[1, 0], [2, 0], [0, 2]]
+# numCourses = 3
+# prerequisites = [[1, 0], [2, 0], [0, 2]]
 result = solve.findOrder(numCourses, prerequisites)
 print(result)
