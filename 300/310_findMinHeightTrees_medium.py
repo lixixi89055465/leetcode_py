@@ -39,27 +39,38 @@ from collections import *
 
 class Solution:
     def findMinHeightTrees(self, n: int, edges):
-        if not edges:
-            return [i for i in range(n)]
+        if n==1:
+            return [0]
         m = defaultdict(list)
-        for i in edges:
-            m[i[1]].append(i[0])
-            m[i[0]].append(i[1])
-        while len(m) > 2:
-            delK = [(k, m[k][0]) for k in m if len(m[k]) == 1]
-            for k, v in delK:
-                m.pop(k)
-                m[v].remove(k)
-        return [k for k in m]
-
+        for info in edges:
+            m[info[0]].append(info[1])
+            m[info[1]].append(info[0])
+        q = deque([i for i in m if len(m[i]) == 1])
+        path = 0
+        while q:
+            if len(q)<=2 and len(m)<=2:
+                break
+            path+=1
+            qlen=len(q)
+            while q:
+                a = q.popleft()
+                qlen-=1
+                if len(m[a])==1:
+                    b = m[a][0]
+                else:
+                    break
+                m.pop(a)
+                m[b].remove(a)
+                if len(m[b])<=1 and b not in q:
+                    q.append(b)
+                if qlen==0:
+                    break
+        return list(q)
 
 solve = Solution()
-# n = 6
-# edges = [[3, 0], [3, 1], [3, 2], [3, 4], [5, 4]]
-# n = 4
-# edges = [[1, 0], [1, 2], [1, 3]]
+n = 6
+edges = [[3, 0], [3, 1], [3, 2], [3, 4], [5, 4]]
 n = 4
-edges = []
-
+edges = [[1,0],[1,2],[1,3]]
 result = solve.findMinHeightTrees(n, edges)
 print(result)
