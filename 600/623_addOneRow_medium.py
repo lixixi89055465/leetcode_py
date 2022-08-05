@@ -49,34 +49,18 @@ import collections
 
 class Solution:
     def addOneRow(self, root, val, depth):
+        if not root:
+            return
         if depth==1:
-            newRoot=TreeNode(val)
-            newRoot.left=root
-            return newRoot
-        q = collections.deque()
-        q.append(root)
-        qlen = 1
-        dep = 1
-
-        while q and dep < depth-1:
-            p = q.popleft()
-            qlen -= 1
-
-            if p.left:
-                q.append(p.left)
-            if p.right:
-                q.append(p.right)
-            if qlen == 0:
-                dep += 1
-                qlen = len(q)
-        for i in q:
-            newLeft = TreeNode(val)
-            newRight = TreeNode(val)
-            newLeft.left = i.left
-            newRight.right = i.right
-            i.left=newLeft
-            i.right=newRight
+            return TreeNode(val,root,None)
+        if depth==2:
+            root.left=TreeNode(root.left,None)
+            root.right=TreeNode(None,root.right)
+        else:
+            root.left=self.addOneRow(root.left,val,depth-1)
+            root.right=self.addOneRow(root.right,val,depth-1)
         return root
+
 
 
 
