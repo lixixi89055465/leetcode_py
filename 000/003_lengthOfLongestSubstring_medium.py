@@ -35,21 +35,19 @@ s 由英文字母、数字、符号和空格组成
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        from collections import Counter
-        m=Counter()
-        left=0
-        mans=0
-        ans=0
-        for i,c in enumerate(s):
-            if c in m and m[c]>=left:
-                left=m[c]+1
-                m[c]=i
-                ans=i-left+1
-            else:
-                m[c]=i
-                ans+=1
-            mans=max(mans,ans)
-        return mans
+        n = len(s)
+        dp = [[False for _ in range(n)] for _ in range(n)]
+        for i in range(n):
+            dp[i][i] = True
+            if i != 0 and s[i - 1] == s[i]:
+                dp[i - 1][i] = True
+        print(dp)
+        for d in range(2, n):
+            for j in range(0, n):
+                if j + d < n and s[j] == s[j + d] and dp[j + 1][j + d - 1]:
+                    dp[j][j+d]=True
+        print(dp)
+        print(dp)
 
 
         # m = dict()
