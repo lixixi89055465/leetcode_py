@@ -68,39 +68,76 @@ from collections import *
 
 
 class Solution(object):
-    def exclusiveTime(self, n, logs):
-        """
-        :type n: int
-        :type logs: List[str]
-        :rtype: List[int]
-        """
-        s = []
-        start = 'start'
-        end = 'end'
-        result = [0] * n
-        time = []
-        logsT = []
+    def exclusiveTime(self, n: int, logs):
+        ans = [0] * n
+        st = []
         for log in logs:
-            st = log.split(':')
-            logsT.append((int(st[0]), st[1], int(st[2])))
-        for log in logsT:
-            if log[1] == start:
-                s.append(log)
-            elif log[1] == end:
-                e = s.pop()
-                segmentSum = log[2] - e[2] + 1
-                ttime = time[:]
-                for index, t in enumerate(ttime):
-                    if log[0]!=t[0] and e[2] < t[1] and t[2] < log[2]:
-                        segmentSum -= t[2] - t[1] + 1
-                        time.remove(t)
-                time.append((e[0], e[2], log[2]))
-                result[e[0]] = segmentSum
-        print(result)
+            idx, tp, timestamp = log.split(':')
+            idx, timestamp = int(idx), int(timestamp)
+            if tp[0] == 's':
+                if st:
+                    ans[st[-1][0]] += timestamp - st[-1][1]
+                    st[-1][1] = timestamp
+                st.append([idx, timestamp])
+            else:
+                i, t = st.pop()
+                ans[i] += timestamp - t + 1
+                if st:
+                    st[-1][1] = timestamp + 1
+        return ans
+
+
+# def exclusiveTime(self, n, logs):
+#     """
+#     :type n: int
+#     :type logs: List[str]
+#     :rtype: List[int]
+#     """
+#     s = []
+#     start = 'start'
+#     end = 'end'
+#     result = [0] * n
+#     time = []
+#     logsT = []
+#     for log in logs:
+#         st = log.split(':')
+#         logsT.append((int(st[0]), st[1], int(st[2])))
+#     for log in logsT:
+#         if log[1] == start:
+#             s.append(log)
+#         elif log[1] == end:
+#             e = s.pop()
+#             segmentSum = log[2] - e[2] + 1
+#             ttime = time[:]
+#             for index, t in enumerate(ttime):
+#                 if log[0] != t[0] and e[2] < t[1] and t[2] < log[2]:
+#                     segmentSum -= t[2] - t[1] + 1
+#                 elif log[0] == t[0] and e[2] > t[1] and t[2] < log[2]:
+#                     segmentSum += t[2] - t[1] + 1
+#
+#             time.append((e[0], e[2], log[2]))
+#             result[e[0]] = segmentSum
+#     return result
 
 
 solve = Solution()
+# n = 2
+# logs = ["0:start:0", "0:start:2", "0:end:5", "1:start:6", "1:end:6", "0:end:7"]
+# n = 2
+# logs = ["0:start:0","1:start:2","1:end:5","0:end:6"]
+# n = 1
+# logs = ["0:start:0","0:start:2","0:end:5","0:start:6","0:end:6","0:end:7"]
 n = 2
-logs = ["0:start:0", "0:start:2", "0:end:5", "1:start:6", "1:end:6", "0:end:7"]
+logs = ["0:start:0","0:start:2","0:end:5","1:start:7","1:end:7","0:end:8"]
+# n = 1
+# logs = ["0:start:0","0:end:0"]
+# n = 3
+# logs = ["0:start:0", "0:end:0", "1:start:1", "1:end:1", "2:start:2", "2:end:2", "2:start:3", "2:end:3"]
+# n = 8
+# logs = ["0:start:0", "1:start:5", "2:start:6", "3:start:9", "4:start:11", "5:start:12", "6:start:14", "7:start:15",
+#         "1:start:24", "1:end:29", "7:end:34", "6:end:37", "5:end:39", "4:end:40", "3:end:45", "0:start:49", "0:end:54",
+#         "5:start:55", "5:end:59", "4:start:63", "4:end:66", "2:start:69", "2:end:70", "2:start:74", "6:start:78",
+#         "0:start:79", "0:end:80", "6:end:85", "1:start:89", "1:end:93", "2:end:96", "2:end:100", "1:end:102",
+#         "2:start:105", "2:end:109", "0:end:114"]
 result = solve.exclusiveTime(n, logs)
 print(result)
