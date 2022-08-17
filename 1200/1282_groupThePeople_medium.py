@@ -46,7 +46,6 @@ class Solution:
                 result.append(m[k][j * k:(j + 1) * k])
         return result
 
-
 solve = Solution()
 groupSizes = [3, 3, 3, 3, 3, 1, 3]
 groupSizes = [2, 1, 3, 3, 3, 2]

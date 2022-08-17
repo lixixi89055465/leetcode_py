@@ -61,50 +61,45 @@ class TreeNode:
 #
 class Solution:
     def pruneLeaves(self, root):
-        maxLevel = 1
+        def isLeaf(r):
+            if (r.left and not r.left.left and not r.left.right) or (
+                    r.right and not r.right.left and not r.right.right):
+                return True
+            return False
 
-        def dfs(r, level):
-            nonlocal maxLevel
-            if not r.left and not r.right:
-                maxLevel = max(maxLevel, level)
-                return
+        def dfs(r):
+            if isLeaf(r):
+                return None
             if r.left:
-                dfs(r.left, level + 1)
+                if isLeaf(r.left):
+                    r.left = None
+                else:
+                    dfs(r.left)
             if r.right:
-                dfs(r.right, level + 1)
+                if isLeaf(r.right):
+                    r.right = None
+                else:
+                    dfs(r.right)
+            return r
 
-        dfs(root, 1)
-        if maxLevel <= 2:
-            return None
-
-        def delRoot(r, level):
-            nonlocal maxLevel
-            if level == maxLevel - 2:
-                r.left = None
-                r.right = None
-
-            if r.left:
-                delRoot(r.left, level + 1)
-            if r.right:
-                delRoot(r.right, level + 1)
-
-        delRoot(root, 1)
+        root = dfs(root)
         return root
 
 
 solve = Solution()
-t4 = TreeNode(1)
-t5 = TreeNode(1)
-t6 = TreeNode(1)
-t7 = TreeNode(1)
-t2 = TreeNode(1, t4, t5)
-t3 = TreeNode(1, t6, t7)
-t1 = TreeNode(1, t2, t3)
-
+# t4 = TreeNode(1)
 # t5 = TreeNode(1)
-# t4 = TreeNode(1, right=t5)
-# t3 = TreeNode(1, right=t4)
-# t2 = TreeNode(1, right=t3)
-# t1 = TreeNode(1, right=t2)
+# t6 = TreeNode(1)
+# t7 = TreeNode(1)
+# t2 = TreeNode(1, t4, t5)
+# t3 = TreeNode(1, t6, t7)
+# # t3 = TreeNode(1, None, None)
+# t1 = TreeNode(1, t2, t3)
+
+t5 = TreeNode(1)
+t4 = TreeNode(1, right=t5)
+t3 = TreeNode(1, right=t4)
+t2 = TreeNode(1, right=t3)
+t1 = TreeNode(1, right=t2)
 result = solve.pruneLeaves(t1)
 print(result)
