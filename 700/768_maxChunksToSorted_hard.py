@@ -31,41 +31,16 @@ import collections
 
 class Solution:
     def maxChunksToSorted(self, arr):
-        seqArr = sorted(arr)
-        m = collections.defaultdict()
-        for i, v in enumerate(arr):
-            if v in m:
-                m[v] = max(m[v], i)
+        stack = list()
+        for a in arr:
+            if not stack or stack[-1] <= a:
+                stack.append(a)
             else:
-                m[v] = i
-        ans = list()
-        start = 0
-        for a in seqArr:
-            position = m[a]
-            if position >= start:
-                # ans.append(arr[start: position + 1])
-                tmpAns = arr[start: position + 1]
-                minE = min(tmpAns)
-                maxE = max(tmpAns)
-                for i, v in enumerate(tmpAns):
-                    if v != minE:
-                        break
-                    ans.append([v])
-                if i!=0:
-                    continue
-                start = 0
-                end = len(tmpAns)
-                for i, v in enumerate(tmpAns[::-1]):
-                    if v != maxE:
-                        end = end - i
-                        break
-                if start < end:
-                    ans.append(tmpAns[start:end])
-                for i in tmpAns[max(start, end):]:
-                    ans.append([i])
-                start = position + 1
-        print(ans)
-        return len(ans)
+                mx = stack.pop()
+                while stack and stack[-1] > a:
+                    stack.pop()
+                stack.append(mx)
+        return len(stack)
 
 
 solve = Solution()
@@ -77,6 +52,6 @@ arr = [3, 2, 1, 3, 3, 4, 4, 6, 5, 7, 8, 9, 10]
 arr = [3, 2, 1, 3, 3, 4, 4, 6, 5, 7, 8, 9, 10, 4, 4, 4, 4, 4]
 arr = [3, 2, 1, 3, 3, 4, 4, 6, 5, 7, 8, 9, 10, 4, 4, 4, 4, 49, 99]
 # arr = [0, 0, 1, 1, 1]
-arr=[0,3,0,3,2]
+arr = [0, 3, 0, 3, 2]
 ans = solve.maxChunksToSorted(arr)
 print(ans)
