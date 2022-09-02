@@ -49,12 +49,13 @@ def arrToTree(arr):
             s.append(a1.left)
         else:
             s.append(None)
-        tmp1 = q.popleft()
-        if tmp1:
-            a1.right = TreeNode(tmp1)
-            s.append(a1.right)
-        else:
-            s.append(None)
+        if q:
+            tmp1 = q.popleft()
+            if tmp1:
+                a1.right = TreeNode(tmp1)
+                s.append(a1.right)
+            else:
+                s.append(None)
     root = r1
     return root
 

@@ -33,20 +33,34 @@
 
 
 # Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+from collections import defaultdict
+
+
 class Solution(object):
     def constructMaximumBinaryTree(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: TreeNode
-        """
+        n = len(nums)
+        stk = list()
+        tree = [None] * n
+        for i in range(n):
+            tree[i] = TreeNode(nums[i])
+            while stk and nums[i] > nums[stk[-1]]:
+                tree[i].left = tree[stk[-1]]
+                stk.pop()
+            if stk:
+                tree[stk[-1]].right = tree[i]
+            stk.append(i)
+        return tree[stk[0]]
 
 
 solve = Solution()
-nums = [6, 3, 5, None, 2, 0, None, None, 1]
+# nums = [6, 3, 5, None, 2, 0, None, None, 1]
+nums = [3, 2, 1, 6, 0, 5]
 result = solve.constructMaximumBinaryTree(nums)
 print(result)
