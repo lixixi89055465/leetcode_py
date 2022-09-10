@@ -42,3 +42,30 @@ logs[i] 包含小写英文字母，数字，'.' 和 '/'
 logs[i] 符合语句中描述的格式
 文件夹名称由小写英文字母和数字组成
 '''
+
+
+class Solution(object):
+    def minOperations(self, logs):
+        """
+        :type logs: List[str]
+        :rtype: int
+        """
+        s = []
+        for log in logs:
+            logArr = log.split('/')
+            if logArr[0][0] == '.' and len(logArr[0]) == 1:
+                continue
+            elif logArr[0] == '..':
+                if s:
+                    s.pop()
+            else:
+                s.append(log)
+        return len(s)
+
+
+solve = Solution()
+# logs = ["d1/", "d2/", "./", "d3/", "../", "d31/"]
+# logs = ["d1/","../","../","../"]
+logs = ["d1/","d2/","../","d21/","./"]
+result = solve.minOperations(logs)
+print(result)
