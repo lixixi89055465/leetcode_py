@@ -34,13 +34,14 @@ import heapq
 
 
 class Solution:
-    def mincostToHireWorkers(self, quality, wage, k) -> float:
+    def mincostToHireWorkers(self, quality, wage, k):
         n = len(quality)
-        workers = [(-i[1] / i[0], i[0], i[1]) for i in zip(quality, wage)]
-        workers = sorted(workers,reverse=True)
+        workers = [(-i[1]*1.0 / i[0], i[0], i[1]) for i in zip(quality, wage)]
+        print(workers)
+        workers = sorted(workers, reverse=True)
         q = [-i[1] for i in workers[:k]]
         sumq = sum(i[1] for i in workers[:k])
-        ans = -sumq * workers[k-1][0]
+        ans = -sumq * workers[k - 1][0]
         heapq.heapify(q)
         for i in range(k, n):
             a = heapq.heappop(q)
@@ -52,15 +53,20 @@ class Solution:
 
 
 solve = Solution()
-# quality = [3, 1, 10, 10, 1]
-# wage = [4, 8, 2, 2, 7]
-# k = 3
+quality = [3, 1, 10, 10, 1]
+wage = [4, 8, 2, 2, 7]
+k = 1
 
 # quality = [10, 20, 5]
 # wage = [70, 50, 30]
 # k = 2
-quality = [25, 68, 35, 62, 52, 57, 35, 83, 40, 51]
-wage = [147, 97, 251, 129, 438, 443, 120, 366, 362, 343]
-k = 6
+# quality = [25, 68, 35, 62, 52, 57, 35, 83, 40, 51]
+# wage = [147, 97, 251, 129, 438, 443, 120, 366, 362, 343]
+# k = 6
+
+quality = [3, 1, 10, 10, 1]
+wage = [4, 8, 2, 2, 7]
+k = 3
+
 result = solve.mincostToHireWorkers(quality, wage, k)
 print(result)
