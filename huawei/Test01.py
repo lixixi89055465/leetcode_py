@@ -1,4 +1,2 @@
-s1 = input()
-print(len(s1))
-print('0' * 100)
-print(s1)
+s = '021Abc9000'
+print(s[1:3])
