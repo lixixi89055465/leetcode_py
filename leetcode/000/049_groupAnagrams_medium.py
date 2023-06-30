@@ -34,15 +34,16 @@ from collections import defaultdict
 class Solution:
     def groupAnagrams(self, strs):
         m = defaultdict(list)
-        for s in strs:
-            counts = [0] * 26
-            for ch in s:
-                counts[ord(ch) - ord('a')] += 1
-            m[tuple(counts)].append(s)
+        for word in strs:
+            count = [0] * 26
+            for i in word:
+                count[ord(i) - ord("a")] += 1
+            m[",".join([str(j) for j in count])].append(word)
         return list(m.values())
 
 
 solve = Solution()
-strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+# strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+strs = ["bdddddddddd", "bbbbbbbbbbc"]
 result = solve.groupAnagrams(strs)
 print(result)
