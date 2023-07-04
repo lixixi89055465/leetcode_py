@@ -1,1 +1,1 @@
-print(ord('0'))
+print(-1 % 5)
