@@ -37,31 +37,23 @@ nums 中的每个值都 独一无二
 
 class Solution:
     def search(self, nums, target):
-        if not nums:
-            return -1
         nlen = len(nums)
-        k = self.findK(nums, 0, nlen - 1)
-        left, right = k, (k - 1) % nlen
-        while (left - k) % nlen < (right - k) % nlen:
-            mid = (left + ((right - left + nlen) % nlen) // 2) % nlen
+        left, right = 0, nlen - 1
+        while left <= right:
+            mid = left + (right - left) // 2;
             if nums[mid] == target:
                 return mid
-            elif nums[mid] > target:
-                right = mid
+            if nums[0] <= nums[mid]:
+                if target >= nums[0] and target < nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
             else:
-                left = (mid + 1) % nlen
-        return left if nums[left] == target else -1
-
-    def findK(self, nums, left, right):
-        while left < right:
-            if nums[left] < nums[right]:
-                return left
-            mid = left + (right - left) // 2
-            if nums[mid] >= nums[left]:
-                left = mid + 1
-            else:
-                right = mid
-        return left
+                if target > nums[mid] and target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+        return -1
 
 
 solve = Solution()
@@ -74,4 +66,6 @@ target = 0
 # target = 3
 # nums = [3, 1]
 # target = 1
+nums = [1, 3, 5]
+target = 1
 print(solve.search(nums, target))
