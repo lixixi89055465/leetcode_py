@@ -12,7 +12,7 @@ class Solution(object):
             elif left < right:
                 left, right = 0, 0
         n = len(s)
-        left,right=0,0
+        left, right = 0, 0
         for i in range(n - 1, -1, -1):
             if s[i] == ')':
                 right += 1
@@ -25,19 +25,22 @@ class Solution(object):
         return maxLen
 
     def longestValidParentheses1(self, s):
-        stack = list()
+        stack=list()
         stack.append(-1)
-        n = len(s)
-        maxLen = 0
-        for i in range(len(s)):
-            if s[i] == '(':
+        n=len(s)
+        maxLen=0
+        for i in range(n):
+            if s[i]=='(':
                 stack.append(i)
             else:
                 stack.pop()
                 if not stack:
                     stack.append(i)
                 else:
-                    maxLen = max(maxLen, i - stack[-1])
+                    maxLen=max(maxLen,i-stack[-1])
+        return maxLen
+
+
 
         return maxLen
 
@@ -48,13 +51,15 @@ class Solution(object):
         """
         n = len(s)
         dp = [0 for _ in range(n)]
-        for i, c in enumerate(s):
-            if c == ')':
+        maxLen = 0
+        for i in range(1, n):
+            if s[i] == ')':
                 if s[i - 1] == '(':
-                    dp[i] = (dp[i - 2] if i >= 2 else 0) + 2;
-                elif i - dp[i - 1] > 0 and s[i - dp[i - 1] - 1] == '(':
+                    dp[i] = dp[i - 1] + 2
+                elif s[i - dp[i - 1] - 1] == '(':
                     dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2
-        print(dp)
+                maxLen = max(maxLen, dp[i])
+        return maxLen
 
 
 solve = Solution()
