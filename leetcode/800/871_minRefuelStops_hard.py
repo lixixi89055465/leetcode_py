@@ -46,10 +46,24 @@
 
 
 class Solution:
-    def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
-
+    def minRefuelStops(self, target, startFuel, stations):
+        n = len(stations)
+        m = target + 1
+        dp = [[float('-inf')] * m for _ in range(n)]
+        dp[n] = [1] * len(m)
+        for i in range(n - 1, -1, -1):
+            for j in range(0, m):
+                for k in range(i + 1, n):
+                    lens = stations[k] - stations[i]
+                    if lens > j:
+                        break
+                    dp[i][j] = min(dp[i][j], 1 + dp[k][j - lens + startFuel[k]])
+        return dp[0][startFuel]
 
 
 solve = Solution()
-result = solve.minRefuelStops()
+target = 100
+startFuel = 10
+stations = [[10, 60], [20, 30], [30, 30], [60, 40]]
+result = solve.minRefuelStops(target, startFuel, stations)
 print(result)
